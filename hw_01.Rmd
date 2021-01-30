@@ -12,9 +12,45 @@ knitr::opts_chunk$set(echo = TRUE, comment = NA)
 ## Task 1
 
 ```{r mh_distance_function}
-mh_distance <- function() {
-  
-  # body of your function goes here...
+mh_distance <- function(x, y) {
+  #Check logical, numeric, character
+  if(!is.logical(x) & !is.numeric(x) & !is.character(x)) {
+    warning("x is not logical, numeric, or character")
+    return(-1)
+  }
+  if(!is.logical(y) & !is.numeric(y) & !is.character(y)) {
+    warning("y is not logical, numeric, or character")
+    return(-1)
+  }
+  #Check lengths
+  if (is.numeric(x) & is.numeric(y)) {
+    if (nchar(abs(x)) != nchar(abs(y))) {
+      warning("x and y have different lengths") {
+        return(-1)
+      }
+    }
+  }
+  if (is.character(x) & is.character(y)) {
+    if (nchar(x) != nchar(y)) {
+      warning("x and y have different lengths")
+      return(-1)
+    }
+  }
+  #Check decimals
+  if (is.numeric(x) & (round(x) != x)) {
+    warning("x is a decimal")
+    return(-1)
+  }
+  if (is.numeric(y) & (round(y) != y)) {
+    warning("y is a decimal")
+    return(-1)
+  }
+  #Check NA, NaN, Inf, -Inf
+  if (is.na(x) | is.na(y) | is.nan(x) | is.nan(y) | is.infinite(x)
+      | is.infinite(y)) {
+    warning("x or y is NA, NaN, Inf, or -Inf")
+    return(-1)
+  }
   
 }
 ```
