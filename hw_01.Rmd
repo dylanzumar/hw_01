@@ -41,7 +41,7 @@ mh_distance <- function(x, y) {
   }
   #Check decimals
   if (is.numeric(x) && (round(x) != x)) {
-    warning("x is a decimal")
+    warning("x and/or y is a decimal")
     return(-1)
   }
   if (is.numeric(y) && (round(y) != y)) {
@@ -63,8 +63,15 @@ mh_distance <- function(x, y) {
       return(0)
     }
   }
-  a <- strsplit(as.character(x), split = "")[[1]]
-  b <- strsplit(as.character(y), split = "")[[1]]
+  #Return numeric and characters
+  if (is.numeric(x) & is.numeric(y)) {
+    a <- strsplit(as.character(abs(x)), split = "")[[1]]
+    b <- strsplit(as.character(abs(y)), split = "")[[1]]
+  }
+  if (is.character(x) & is.character(y)) {
+    a <- strsplit(as.character(x), split = "")[[1]]
+    b <- strsplit(as.character(y), split = "")[[1]]
+  }
   hamming <- 0
   for (i in 1:length(a)) {
     if (a[i] != b[i]) {
@@ -78,15 +85,9 @@ mh_distance <- function(x, y) {
 
 ## Task 2
 
-<i>
-Be sure to remove chunk option `eval=FALSE` in the below code chunks
-once you create `mh_distance()`. Do not include this italicized
-text in your final submission.
-</i>
-
 **Initial test cases** (return a non-negative modified Hamming distance)
 
-```{r eval=FALSE}
+```{r initial-test-cases}
 mh_distance(x = "abc", y = "abc")
 mh_distance(x = T, y = FALSE)
 mh_distance(x = "523890", y = "752839")
@@ -95,8 +96,35 @@ mh_distance(x = 2341, y = 2350)
 
 Added test cases that return a non-negative modified Hamming distance result.
 
-```{r}
-# additional test cases go here
+```{r additional-test-cases-non-negative}
+#Test all logicals
+mh_distance(x = T, y = F) #1
+mh_distance(x = T, y = T) #0
+mh_distance(x = F, y = F) #0
+mh_distance(x = TRUE, y = FALSE) #1
+mh_distance(x = TRUE, y = TRUE) #0
+mh_distance(x = FALSE, y = FALSE) #0
+
+#Test numerics
+mh_distance(5010,1050) #2
+mh_distance(-456,456) #0
+mh_distance(456,-456) #0
+mh_distance(-456,-456) #0
+mh_distance(5901,5911) #1
+mh_distance(11578,12241) #4
+mh_distance(300000,400000) #1
+mh_distance(2.0,3.0) #1
+mh_distance(2,3.0) #1
+mh_distance(2.0,3) #1
+
+#Test characters
+mh_distance("right", "fight") #1
+mh_distance("stop", "seek") #3
+mh_distance("ABBA", "abba") #4
+mh_distance("hi mom", "hi dad") #3
+mh_distance("manna", "annam") #4
+mh_distance("mom hi", "hi mom") #6
+mh_distance("buffalo chicken sandwich", "bufgalo chicgen sangwich") #3
 ```
 
 **Initial test cases** (return values of `-1`)
