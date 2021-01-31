@@ -1,7 +1,7 @@
 ---
 title: "Homework 1"
 author: "Dylan Zumar"
-date: "02/2/2021"
+date: "02/03/2021"
 output: html_document
 ---
 
@@ -19,15 +19,6 @@ mh_distance <- function(x, y) {
     warning("x or y is NA, NaN, Inf, or -Inf")
     return(-1)
   }
-  #Check decimals
-  if (is.numeric(x) && (round(x) != x)) {
-    warning("x and/or y is a decimal")
-    return(-1)
-  }
-  if (is.numeric(y) && (round(y) != y)) {
-    warning("y is a decimal")
-    return(-1)
-  }
   #Check logical, numeric, character
   if (typeof(x) != typeof(y)) {
     warning("x and y are different types")
@@ -39,6 +30,15 @@ mh_distance <- function(x, y) {
   }
   if (!is.logical(y) & !is.numeric(y) & !is.character(y)) {
     warning("y is not logical, numeric, or character")
+    return(-1)
+  }
+  #Check decimals
+  if (is.numeric(x) && (round(x) != x)) {
+    warning("x and/or y is a decimal")
+    return(-1)
+  }
+  if (is.numeric(y) && (round(y) != y)) {
+    warning("y is a decimal")
     return(-1)
   }
   #Check lengths
@@ -129,7 +129,7 @@ mh_distance("buffalo chicken sandwich", "bufgalo chicgen sangwich") #3
 
 **Initial test cases** (return values of `-1`)
 
-```{r eval=FALSE}
+```{r initial-test-cases-negative-one}
 mh_distance(x = 52, y = 113)
 mh_distance(x = "swimming", y = "winning")
 mh_distance(x = NA, y = TRUE)
@@ -257,16 +257,27 @@ mh_distance("hi",-Inf) #-Inf error
 
 Consider the pair of vectors `s` and `w` given below.
 
-```{r}
+```{r create-vectors}
 s <- c(26, 50123, 456.12, 8, 0)
 w <- c(22, 50000, 451.00, 88, 0)
 ```
 
-```{r}
-# loop goes here
+```{r hamming-loop}
+for (i in 1:length(s)) {
+  hamming <- suppressWarnings(mh_distance(s[i], w[i]))
+  if (hamming == -1) {
+    next
+  }
+  print(paste0("The modified Hamming distance between ", s[i], " and ", w[i], 
+         " is ", hamming))
+}
 ```
 
 
 ## Task 4
 
-Brief write-up goes here...
+I handled invalid inputs in Task 1 by doing checks to immediately return -1 if either of the arguments were NA, NaN, Inf, or -Inf because those all are invalid. I used the is.na(), is.nan(), and is.infinite() functions to check for those. Next, I checked for decimals by rounding the numeric arguments and seeing if they equaled themselves. Then, I handled mismatching arguments types by checking if typeof() didn't match. I also checked to make sure both arguments were either numeric, character, or logical objects by using is.numeric(), is.character(), and is.logical(). Finally, if the inputs were characters, then I checked the lengths to make sure they were the same. I also did the same for the lengths of numerics, but controlled for negatives by comparing the lengths of the absolute values.
+
+I structured my code in a way where I took a certain limitation, such as mismatching types, NA/NaN/Inf/-Inf and then used a series of if-statements to handle all of the different inputs that need to be handled to cover the various instructions that were given. I also made comments within my function so that I knew where I was handling the various instructions. In the end, I also treated numerics like characters because the Hamming distance essentially treats numbers like characters and doesn't actually employ their values.
+
+I know that my function isn't necessarily as efficiently-written as possible, which may be a drawback for those looking at my code without me explaining it. I also know that my code doesn't not pinpoint which argument is invalid if it returns -1, but I just decided to leave it up to the user to figure out which argument may be NA/NaN/Inf/-Inf because it should more or less be straightforward. I also know that my function could probably run faster if I wrote it more efficiently, but that would have been marginal utility gain given how quickly it runs on all of the above test cases.
