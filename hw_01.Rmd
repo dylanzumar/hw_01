@@ -13,6 +13,21 @@ knitr::opts_chunk$set(echo = TRUE, comment = NA)
 
 ```{r mh_distance_function}
 mh_distance <- function(x, y) {
+  #Check NA, NaN, Inf, -Inf
+  if (is.na(x) | is.na(y) | is.nan(x) | is.nan(y) | is.infinite(x)
+      | is.infinite(y)) {
+    warning("x or y is NA, NaN, Inf, or -Inf")
+    return(-1)
+  }
+  #Check decimals
+  if (is.numeric(x) && (round(x) != x)) {
+    warning("x and/or y is a decimal")
+    return(-1)
+  }
+  if (is.numeric(y) && (round(y) != y)) {
+    warning("y is a decimal")
+    return(-1)
+  }
   #Check logical, numeric, character
   if (typeof(x) != typeof(y)) {
     warning("x and y are different types")
@@ -38,21 +53,6 @@ mh_distance <- function(x, y) {
       warning("x and y have different lengths")
       return(-1)
     }
-  }
-  #Check decimals
-  if (is.numeric(x) && (round(x) != x)) {
-    warning("x and/or y is a decimal")
-    return(-1)
-  }
-  if (is.numeric(y) && (round(y) != y)) {
-    warning("y is a decimal")
-    return(-1)
-  }
-  #Check NA, NaN, Inf, -Inf
-  if (is.na(x) | is.na(y) | is.nan(x) | is.nan(y) | is.infinite(x)
-      | is.infinite(y)) {
-    warning("x or y is NA, NaN, Inf, or -Inf")
-    return(-1)
   }
   #Return logicals
   if (is.logical(x) & is.logical(y)) {
@@ -138,8 +138,118 @@ mh_distance(x = 1.5, y = 2.5)
 
 Added test cases that return a value of `-1`.
 
-```{r}
-# additional test cases go here
+```{r additional-test-cases-negative-one}
+#Test all logicals
+mh_distance(NA,T) #NA error
+mh_distance(T,NA) #NA error
+mh_distance(NA,F) #NA error
+mh_distance(F,NA) #NA error
+mh_distance(NA,TRUE) #NA error
+mh_distance(TRUE,NA) #NA error
+mh_distance(NA,FALSE) #NA error
+mh_distance(FALSE,NA) #NA error
+mh_distance(NaN,T) #NAn error
+mh_distance(T,NaN) #NAn error
+mh_distance(NaN,F) #NAn error
+mh_distance(F,NaN) #NAn error
+mh_distance(NaN,TRUE) #NAn error
+mh_distance(TRUE,NaN) #NAn error
+mh_distance(NaN,FALSE) #NAn error
+mh_distance(FALSE,NaN) #NAn error
+mh_distance(-Inf,T) #-Inf error
+mh_distance(T,-Inf) #-Inf error
+mh_distance(-Inf,F) #-Inf error
+mh_distance(F,-Inf) #-Inf error
+mh_distance(-Inf,TRUE) #-Inf error
+mh_distance(TRUE,-Inf) #-Inf error
+mh_distance(-Inf,FALSE) #-Inf error
+mh_distance(FALSE,-Inf) #-Inf error
+mh_distance(Inf,T) #Inf error
+mh_distance(T,Inf) #Inf error
+mh_distance(Inf,F) #Inf error
+mh_distance(F,Inf) #Inf error
+mh_distance(Inf,TRUE) #Inf error
+mh_distance(TRUE,Inf) #Inf error
+mh_distance(Inf,FALSE) #Inf error
+mh_distance(FALSE,Inf) #Inf error
+
+#Test numerics
+mh_distance(x = -152, y = -49) #different lengths
+mh_distance(x = 152, y = -49) #different lengths
+mh_distance(x = -152, y = 49) #different lengths
+mh_distance(-152.1, 152) #decimal error
+mh_distance(-152, 152.1) #decimal error
+mh_distance(-152.1, 152.1) #decimal error
+mh_distance(152.1, 152) #decimal error
+mh_distance(152, 152.1) #decimal error
+mh_distance(152.1, 152.1) #decimal error
+mh_distance(Inf,152) #Inf error
+mh_distance(152,Inf) #Inf error
+mh_distance(Inf,152) #Inf error
+mh_distance(152,Inf) #Inf error
+mh_distance(Inf,152) #Inf error
+mh_distance(152,Inf) #Inf error
+mh_distance(Inf,152.0) #Inf error
+mh_distance(152,Inf) #Inf error
+mh_distance(NA,152) #NA error
+mh_distance(152,NA) #NA error
+mh_distance(NA,152) #NA error
+mh_distance(152,NA) #NA error
+mh_distance(NA,152.0) #NA error
+mh_distance(152,NA) #NA error
+mh_distance(NA,152) #NA error
+mh_distance(152,NA) #NA error
+mh_distance(NaN,152) #NaN error
+mh_distance(152.0,NaN) #NaN error
+mh_distance(NaN,152) #NaN error
+mh_distance(152,NaN) #NaN error
+mh_distance(NaN,152) #NaN error
+mh_distance(152,NaN) #NaN error
+mh_distance(NaN,152) #NaN error
+mh_distance(152,NaN) #NaN error
+mh_distance(-Inf,152) #-Inf error
+mh_distance(152,-Inf) #-Inf error
+mh_distance(-Inf,152) #-Inf error
+mh_distance(152,-Inf) #-Inf error
+mh_distance(-Inf,152) #-Inf error
+mh_distance(152,-Inf) #-Inf error
+mh_distance(-Inf,152.0) #-Inf error
+mh_distance(152,-Inf) #-Inf error
+
+#Test strings
+mh_distance("mom", "momi") #different lengths
+mh_distance(Inf,"hi") #Inf error
+mh_distance("hi",Inf) #Inf error
+mh_distance(Inf,"hi") #Inf error
+mh_distance("hi",Inf) #Inf error
+mh_distance(Inf,"hi") #Inf error
+mh_distance("hi",Inf) #Inf error
+mh_distance(Inf,"hi") #Inf error
+mh_distance("hi",Inf) #Inf error
+mh_distance(NA,"hi") #NA error
+mh_distance("hi",NA) #NA error
+mh_distance(NA,"hi") #NA error
+mh_distance("hi",NA) #NA error
+mh_distance(NA,"hi") #NA error
+mh_distance("hi",NA) #NA error
+mh_distance(NA,"hi") #NA error
+mh_distance("hi",NA) #NA error
+mh_distance(NaN,"hi") #NaN error
+mh_distance("hi",NaN) #NaN error
+mh_distance(NaN,"hi") #NaN error
+mh_distance("hi",NaN) #NaN error
+mh_distance(NaN,"hi") #NaN error
+mh_distance("hi",NaN) #NaN error
+mh_distance(NaN,"hi") #NaN error
+mh_distance("hi",NaN) #NaN error
+mh_distance(-Inf,"hi") #-Inf error
+mh_distance("hi",-Inf) #-Inf error
+mh_distance(-Inf,"hi") #-Inf error
+mh_distance("hi",-Inf) #-Inf error
+mh_distance(-Inf,"hi") #-Inf error
+mh_distance("hi",-Inf) #-Inf error
+mh_distance(-Inf,"hi") #-Inf error
+mh_distance("hi",-Inf) #-Inf error
 ```
 
 
