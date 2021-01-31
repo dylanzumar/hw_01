@@ -276,8 +276,31 @@ for (i in 1:length(s)) {
 
 ## Task 4
 
-I handled invalid inputs in Task 1 by doing checks to immediately return -1 if either of the arguments were NA, NaN, Inf, or -Inf because those all are invalid. I used the is.na(), is.nan(), and is.infinite() functions to check for those. Next, I checked for decimals by rounding the numeric arguments and seeing if they equaled themselves. Then, I handled mismatching arguments types by checking if typeof() didn't match. I also checked to make sure both arguments were either numeric, character, or logical objects by using is.numeric(), is.character(), and is.logical(). Finally, if the inputs were characters, then I checked the lengths to make sure they were the same. I also did the same for the lengths of numerics, but controlled for negatives by comparing the lengths of the absolute values.
+I handled invalid inputs in Task 1 by doing checks to immediately return -1 
+if either of the arguments were NA, NaN, Inf, or -Inf because those all are 
+invalid. I used the is.na(), is.nan(), and is.infinite() functions to check
+for those. Next, I checked for decimals by rounding the numeric arguments and
+seeing if they equaled themselves. Then, I handled mismatching arguments types
+by checking if typeof() didn't match. I also checked to make sure both 
+arguments were either numeric, character, or logical objects by using 
+is.numeric(), is.character(), and is.logical(). Finally, if the inputs were 
+characters, then I checked the lengths to make sure they were the same. I also 
+did the same for the lengths of numerics, but controlled for negatives by 
+comparing the lengths of the absolute values.
 
-I structured my code in a way where I took a certain limitation, such as mismatching types, NA/NaN/Inf/-Inf and then used a series of if-statements to handle all of the different inputs that need to be handled to cover the various instructions that were given. I also made comments within my function so that I knew where I was handling the various instructions. In the end, I also treated numerics like characters because the Hamming distance essentially treats numbers like characters and doesn't actually employ their values.
+I structured my code in a way where I took a certain limitation, such as 
+mismatching types, NA/NaN/Inf/-Inf and then used a series of if-statements to 
+handle all of the different inputs that need to be handled to cover the various 
+instructions that were given. I also made comments within my function so that I 
+knew where I was handling the various instructions. In the end, I also treated 
+numerics like characters because the Hamming distance essentially treats numbers 
+like characters and doesn't actually employ their values.
 
-I know that my function isn't necessarily as efficiently-written as possible, which may be a drawback for those looking at my code without me explaining it. I also know that my code doesn't not pinpoint which argument is invalid if it returns -1, but I just decided to leave it up to the user to figure out which argument may be NA/NaN/Inf/-Inf because it should more or less be straightforward. I also know that my function could probably run faster if I wrote it more efficiently, but that would have been marginal utility gain given how quickly it runs on all of the above test cases.
+I know that my function isn't necessarily as efficiently-written as possible, 
+which may be a drawback for those looking at my code without me explaining it. 
+I also know that my code doesn't not pinpoint which argument is invalid if it 
+returns -1, but I just decided to leave it up to the user to figure out which 
+argument may be NA/NaN/Inf/-Inf because it should more or less be 
+straightforward. I also know that my function could probably run faster if I 
+wrote it more efficiently, but that would have been marginal utility gain given 
+how quickly it runs on all of the above test cases.
