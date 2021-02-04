@@ -16,7 +16,7 @@ mh_distance <- function(x, y) {
   #Check NA, NaN, Inf, -Inf
   if (is.na(x) | is.na(y) | is.nan(x) | is.nan(y) | is.infinite(x)
       | is.infinite(y)) {
-    warning("x or y is NA, NaN, Inf, or -Inf")
+    warning("x or y cannot be NA, NaN, Inf, or -Inf")
     return(-1)
   }
   #Check logical, numeric, character
@@ -44,7 +44,7 @@ mh_distance <- function(x, y) {
   #Check lengths
   if (is.numeric(x) & is.numeric(y)) {
     if (nchar(abs(x)) != nchar(abs(y))) {
-      warning("x and y have different lengths")
+      warning("x and y do not have the same number of digits or letters")
         return(-1)
     }
   }
